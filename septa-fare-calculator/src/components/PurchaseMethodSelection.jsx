@@ -1,14 +1,16 @@
+import styles from "./PurchaseMethodSelection.module.css";
+
 export default function PurchaseMethodSelection() {
   return (
-    <div>
-      <h3>Where will you purchase the fare?</h3>
-      <div>
+    <div className={styles.container}>
+      <span className={styles.title}>Where will you purchase the fare?</span>
+      <div className={styles.radioContainer}>
         <label>
-          <input type="radio" name="purchase_method" />
+          <input type="radio" name="purchaseMethod" />
           Station Kiosk
         </label>
         <label>
-          <input type="radio" name="purchase_method" />
+          <input type="radio" name="purchaseMethod" />
           Onboard
         </label>
       </div>

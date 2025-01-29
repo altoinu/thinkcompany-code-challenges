@@ -25,7 +25,7 @@ export default function Main() {
   }, [data]);
 
   return (
-    <div>
+    <div className={styles.container}>
       <TitleBar />
       <DestinationSelection />
       <RideDaySelection />
