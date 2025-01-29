@@ -7,9 +7,14 @@ import TitleBar from "./components/TitleBar";
 import TotalFareCostView from "./components/TotalFareCostView";
 import { FareContext } from "./context/FareContext";
 import useFetch, { FetchStatus } from "./hooks/useFetch";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function FareWidget() {
+  const [destination, setDestination] = useState();
+  const [rideDay, setRideDay] = useState();
+  const [purchaseMethod, setPurchaseMethod] = useState();
+  const [numRides, setNumRides] = useState();
+
   const { fetch, fetchStatus, data } = useFetch({
     method: "GET",
     url: "/data/fares.json",
@@ -33,10 +38,18 @@ export default function FareWidget() {
       <div className={styles.container}>
         <div className={styles.widget}>
           <TitleBar />
-          <DestinationSelection />
-          <RideDaySelection />
-          <PurchaseMethodSelection />
-          <NumRidesEntry />
+          <DestinationSelection onChange={(value) => setDestination(value)} />
+          <RideDaySelection onChange={(value) => setRideDay(value)} />
+          <PurchaseMethodSelection
+            onChange={(value) => setPurchaseMethod(value)}
+          />
+          <NumRidesEntry onChange={(value) => setNumRides(value)} />
+          <div>
+            <p>{destination}</p>
+            <p>{rideDay}</p>
+            <p>{purchaseMethod}</p>
+            <p>{numRides}</p>
+          </div>
           <TotalFareCostView />
         </div>
         <div
