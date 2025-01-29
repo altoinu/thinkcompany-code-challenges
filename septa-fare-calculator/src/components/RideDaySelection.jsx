@@ -35,15 +35,16 @@ function RideDaySelection({ onChange }) {
     }
   }, [data]);
 
-  // function to return helperText for selected selection type
-  const getHelperText = useCallback(
-    (type) => {
-      const data = rideDayData.find((item) => item.type === type);
+  // function to return selected data
+  const getSelectedData = (type) =>
+    rideDayData ? rideDayData.find((item) => item.type === type) : null;
 
-      return data ? data.helperText : "";
-    },
-    [rideDayData],
-  );
+  // function to return helperText for selected type
+  const getHelperText = (type) => {
+    const data = getSelectedData(type);
+
+    return data ? data.helperText : "";
+  };
 
   // onChange handler to remember selection
   const handleSelectChange = useCallback((e) => {
@@ -51,7 +52,7 @@ function RideDaySelection({ onChange }) {
 
     // send new selection to parent
     if (onChange) {
-      onChange(e.target.value);
+      onChange(getSelectedData(e.target.value));
     }
   });
 

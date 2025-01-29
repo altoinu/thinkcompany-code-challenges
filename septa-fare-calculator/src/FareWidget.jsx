@@ -33,6 +33,16 @@ export default function FareWidget() {
     [data],
   );
 
+  // using data from each field, calculate ride cost
+  const cost = useMemo(() => {
+    if (data && destination && rideDay && purchaseMethod && numRides) {
+      console.log(destination, rideDay, purchaseMethod, numRides);
+      return 0;
+    } else {
+      return 0;
+    }
+  }, [data, destination, rideDay, purchaseMethod, numRides]);
+
   return (
     <FareContext value={fareData}>
       <div className={styles.container}>
@@ -46,11 +56,11 @@ export default function FareWidget() {
           <NumRidesEntry onChange={(value) => setNumRides(value)} />
           <div>
             <p>{destination}</p>
-            <p>{rideDay}</p>
+            <p>{rideDay && rideDay.type}</p>
             <p>{purchaseMethod}</p>
-            <p>{numRides}</p>
+            <p>{numRides ? numRides : 0}</p>
           </div>
-          <TotalFareCostView />
+          <TotalFareCostView cost={cost} />
         </div>
         <div
           className={styles.loaderContainer}
