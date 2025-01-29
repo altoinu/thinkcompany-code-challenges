@@ -36,79 +36,81 @@ export default function useFetch({ headers, method = "GET", url }) {
       setIsFetching(true);
       setResponse(null);
 
-      return new Promise(async (resolve, reject) => {
-        // if newHeaders is specified, use that instead for this execute only
-        const requestHeaders = newHeaders || headers;
-        // if newUrl is specified, use that instead for this execute only
-        let requestUrl = newUrl || url;
-        // Append query string to request URL, if provided.
-        if (query) {
-          const queryParams = new URLSearchParams(query);
-          requestUrl += `?${queryParams}`;
-        }
-
-        const request = new Request(requestUrl, {
-          headers: requestHeaders,
-          method,
-          body,
-        });
-
-        try {
-          const response = await fetch(request);
-
-          if (!response.ok) {
-            throw new HTTPError(method, requestUrl, response.status, response);
+      return new Promise((resolve, reject) => {
+        (async function () {
+          // if newHeaders is specified, use that instead for this execute only
+          const requestHeaders = newHeaders || headers;
+          // if newUrl is specified, use that instead for this execute only
+          let requestUrl = newUrl || url;
+          // Append query string to request URL, if provided.
+          if (query) {
+            const queryParams = new URLSearchParams(query);
+            requestUrl += `?${queryParams}`;
           }
 
-          let responseData = null;
+          const request = new Request(requestUrl, {
+            headers: requestHeaders,
+            method,
+            body,
+          });
 
           try {
-            const contentType = response.headers.get("Content-Type");
+            const response = await fetch(request);
 
-            if (contentType?.includes("application/json")) {
-              responseData = await response.json();
-            } else if (contentType?.includes("text/plain")) {
-              responseData = await response.text();
-            } else {
-              responseData = await response.blob();
+            if (!response.ok) {
+              throw new HTTPError(
+                method,
+                requestUrl,
+                response.status,
+                response,
+              );
             }
+
+            let responseData = null;
+
+            try {
+              const contentType = response.headers.get("Content-Type");
+
+              if (contentType?.includes("application/json")) {
+                responseData = await response.json();
+              } else if (contentType?.includes("text/plain")) {
+                responseData = await response.text();
+              } else {
+                responseData = await response.blob();
+              }
+            } catch (error) {
+              // if content-length is non-empty, then something is wrong
+              if (response.headers.get("Content-Length")) {
+                throw error;
+              }
+            }
+
+            setData(responseData);
+            setError(null);
+            setFetchStatus(FetchStatus.Succeeded);
+            setIsFetching(false);
+            setResponse(response);
+
+            resolve({ data: responseData, response });
           } catch (error) {
-            // if content-length is non-empty, then something is wrong
-            if (response.headers.get("Content-Length")) {
-              throw error;
+            setData(null);
+            setError(error);
+            setFetchStatus(FetchStatus.Failed);
+            setIsFetching(false);
+
+            if (error instanceof Error) {
+              if (error instanceof HTTPError) {
+                console.error(error);
+                setResponse(error.response);
+              } else {
+                console.error(`${method} ${requestUrl}: ${error.message}`);
+                setResponse(null);
+              }
             }
+
+            reject(error);
           }
-
-          setData(responseData);
-          setError(null);
-          setFetchStatus(FetchStatus.Succeeded);
-          setIsFetching(false);
-          setResponse(response);
-
-          resolve({ data: responseData, response });
-        } catch (error) {
-          setData(null);
-          setError(error);
-          setFetchStatus(FetchStatus.Failed);
-          setIsFetching(false);
-
-          if (error instanceof Error) {
-            if (error instanceof HTTPError) {
-              console.error(error);
-              setResponse(error.response);
-            } else {
-              console.error(`${method} ${requestUrl}: ${error.message}`);
-              setResponse(null);
-            }
-            /*
-            else {
-              console.error(`${method} ${requestUrl}`, error);
-            }
-            */
-          }
-
-          reject(error);
-        }
+        })();
       });
     },
     [headers, method, url],
