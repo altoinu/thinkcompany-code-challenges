@@ -1,24 +1,49 @@
+import { FareContext } from "../context/FareContext";
 import styles from "./RideDaySelection.module.css";
 import PropTypes from "prop-types";
-import { useCallback, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 
-export const RideDayData = [
-  {
-    type: "weekday",
-    name: "Weekdays",
-  },
-  {
-    type: "evening_weekend",
-    name: "Weekend Evenings",
-  },
-  {
-    type: "anytime",
-    name: "Anytime",
-  },
-];
+export const RideDayNames = {
+  anytime: "Anytime",
+  weekday: "Weekdays",
+  evening_weekend: "Weekend Evenings",
+};
 
 function RideDaySelection({ onChange }) {
   const [selectedOption, setSelectedOption] = useState("");
+
+  // load data from context
+  const { data } = use(FareContext);
+
+  // parse through data and extract ride day info
+  const rideDayData = useMemo(() => {
+    if (data && data.info) {
+      const d = [];
+
+      for (let type in data.info) {
+        if (RideDayNames[type])
+          d.push({
+            type: type,
+            name: RideDayNames[type],
+            helperText: data.info[type],
+          });
+      }
+
+      return d;
+    } else {
+      return null;
+    }
+  }, [data]);
+
+  // function to return helperText for selected selection type
+  const getHelperText = useCallback(
+    (type) => {
+      const data = rideDayData.find((item) => item.type === type);
+
+      return data ? data.helperText : "";
+    },
+    [rideDayData],
+  );
 
   // onChange handler to remember selection
   const handleSelectChange = useCallback((e) => {
@@ -41,15 +66,18 @@ function RideDaySelection({ onChange }) {
         <option value="" disabled defaultValue="">
           Select...
         </option>
-        {RideDayData.map((day, index) => (
-          <option key={index} value={day.type}>
-            {day.name}
-          </option>
-        ))}
+        {rideDayData &&
+          rideDayData.map((day, index) => (
+            <option key={index} value={day.type}>
+              {day.name}
+            </option>
+          ))}
       </select>
-      <span className={styles.helperText}>
-        Helper text that explains the options above.
-      </span>
+      {rideDayData && selectedOption && (
+        <span className={styles.helperText}>
+          {getHelperText(selectedOption)}
+        </span>
+      )}
     </div>
   );
 }
