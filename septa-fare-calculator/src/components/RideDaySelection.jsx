@@ -5,7 +5,7 @@ export default function RideDaySelection() {
     <div className={styles.container}>
       <span className={styles.title}>When are you riding?</span>
       <select className={styles.selection}>
-        <option value="" disabled selected>
+        <option value="" disabled defaultValue="">
           Select...
         </option>
       </select>

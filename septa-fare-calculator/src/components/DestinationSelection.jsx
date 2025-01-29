@@ -5,7 +5,7 @@ export default function DestinationSelection() {
     <div className={styles.container}>
       <span className={styles.title}>Where are you going?</span>
       <select className={styles.selection}>
-        <option value="" disabled selected>
+        <option value="" disabled defaultValue="">
           Select...
         </option>
       </select>
