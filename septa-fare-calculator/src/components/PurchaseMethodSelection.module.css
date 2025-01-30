@@ -1,0 +1,30 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  padding: 45px;
+}
+
+.title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24pt;
+}
+
+.radioContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.radioContainer label {
+  display: flex;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18pt;
+  gap: 18px;
+}
+
+.radioContainer input[type="radio"] {
+  transform: scale(2);
+}

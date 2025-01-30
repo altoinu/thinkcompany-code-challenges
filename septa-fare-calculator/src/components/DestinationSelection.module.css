@@ -1,0 +1,22 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  padding: 45px;
+}
+
+.title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24pt;
+}
+
+.selection {
+  background-color: white;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24pt;
+  padding: 16px;
+  width: 100%;
+}
