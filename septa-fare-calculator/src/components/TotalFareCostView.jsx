@@ -15,8 +15,12 @@ function formatToUSD(number) {
 function TotalFareCostView({ cost }) {
   return (
     <div className={styles.container}>
-      <span className={styles.title}>Your fare will cost</span>
-      <span className={styles.costDisplay}>{formatToUSD(cost ? cost : 0)}</span>
+      <span className={styles.title} id="label-cost_of_fare">
+        Your fare will cost
+      </span>
+      <span className={styles.costDisplay} aria-labelledby="label-cost_of_fare">
+        {formatToUSD(cost ? cost : 0)}
+      </span>
     </div>
   );
 }
