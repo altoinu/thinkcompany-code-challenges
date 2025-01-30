@@ -58,25 +58,30 @@ export default function FareWidget() {
       );
     });
 
-  // using data from each field, calculate ride cost
-  const cost = useMemo(() => {
-    if (data && destinationZone && rideDay && purchaseMethod && numRides) {
-      const zoneData = getZoneData(destinationZone);
-      const rideDayFareData = getRideDayFareData(
-        zoneData,
+  const selectedFareData = useMemo(() => {
+    if (data && destinationZone && rideDay && purchaseMethod) {
+      return getRideDayFareData(
+        getZoneData(destinationZone),
         rideDay,
         purchaseMethod,
       );
+    } else {
+      return null;
+    }
+  }, [data, destinationZone, rideDay, purchaseMethod]);
 
+  // using data from each field, calculate ride cost
+  const cost = useMemo(() => {
+    if (selectedFareData && numRides) {
       // number of trips for this fare
-      const trips = rideDayFareData.trips;
+      const trips = selectedFareData.trips;
 
       // calculate fare = price per trips times number of rides
-      return (rideDayFareData.price / trips) * numRides;
+      return (selectedFareData.price / trips) * numRides;
     } else {
       return 0;
     }
-  }, [data, destinationZone, rideDay, purchaseMethod, numRides]);
+  }, [selectedFareData, numRides]);
 
   return (
     <FareContext value={fareData}>
@@ -90,7 +95,11 @@ export default function FareWidget() {
           <PurchaseMethodSelection
             onChange={(value) => setPurchaseMethod(value)}
           />
-          <NumRidesEntry onChange={(value) => setNumRides(value)} />
+          <NumRidesEntry
+            price={selectedFareData?.price}
+            tripMultiple={selectedFareData?.trips}
+            onChange={(value) => setNumRides(value)}
+          />
           <TotalFareCostView cost={cost} />
         </div>
         <div

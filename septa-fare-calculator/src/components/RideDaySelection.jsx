@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { use, useCallback, useMemo, useState } from "react";
 
 // Labels used for select
-export const RideDayNames = {
+const RideDayNames = {
   anytime: "Anytime",
   weekday: "Weekdays",
   evening_weekend: "Weekend Evenings",
