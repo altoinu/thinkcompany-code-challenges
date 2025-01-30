@@ -23,8 +23,8 @@ function PurchaseMethodSelection({ onChange }) {
           <input
             type="radio"
             name="purchaseMethod"
-            value="kiosk"
-            checked={selectedValue === "kiosk"}
+            value="advance_purchase"
+            checked={selectedValue === "advance_purchase"}
             onChange={handleSelectChange}
           />
           Station Kiosk
@@ -33,8 +33,8 @@ function PurchaseMethodSelection({ onChange }) {
           <input
             type="radio"
             name="purchaseMethod"
-            value="onboard"
-            checked={selectedValue === "onboard"}
+            value="onboard_purchase"
+            checked={selectedValue === "onboard_purchase"}
             onChange={handleSelectChange}
           />
           Onboard
