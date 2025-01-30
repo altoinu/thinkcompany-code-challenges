@@ -1,6 +1,6 @@
 .container {
-  display: inline-block;
   position: relative;
+  width: 100%;
 }
 
 .widget {
@@ -10,7 +10,6 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 645px;
 }
 
 .widget > *:not(:last-child) {
