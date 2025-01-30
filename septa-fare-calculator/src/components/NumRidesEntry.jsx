@@ -17,9 +17,13 @@ function NumRidesEntry({ onChange }) {
 
   return (
     <div className={styles.container}>
-      <span className={styles.title}>How many rides will you need?</span>
+      <label className={styles.title} htmlFor="numRides">
+        How many rides will you need?
+      </label>
       <input
         type="number"
+        id="numRides"
+        name="numRides"
         className={styles.numberInput}
         min="1"
         step="1"
