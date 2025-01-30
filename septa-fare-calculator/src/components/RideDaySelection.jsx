@@ -3,6 +3,7 @@ import styles from "./RideDaySelection.module.css";
 import PropTypes from "prop-types";
 import { use, useCallback, useMemo, useState } from "react";
 
+// Labels used for select
 export const RideDayNames = {
   anytime: "Anytime",
   weekday: "Weekdays",

@@ -13,7 +13,7 @@ export const FetchStatus = {
 /**
  * Custom hook that wraps `fetch` and handles all request & response handling.
  *
- * @param options Default request object data.
+ * @param {{headers:HeadersInit, method:string, url:string}} options Default request object data.
  * @returns An object containing:
  *   - `fetch`: The method that will perform the request & return a Promise.
  *   - `data`: The response body object of the most recent request.

@@ -33,10 +33,20 @@ export default function FareWidget() {
     [data],
   );
 
-  // function get data for specified zone
+  /**
+   * function get data for specified zone
+   * @param {string} zone
+   * @returns
+   */
   const getZoneData = (zone) => data.zones.find((item) => item.zone == zone);
 
-  // function to get fare data for specified day and method in zone
+  /**
+   * function to get fare data for specified day and method in zone data
+   * @param {Object} zone
+   * @param {Object} day
+   * @param {string} method
+   * @returns
+   */
   const getRideDayFareData = (zone, day, method) =>
     zone.fares.find((item) => {
       // find matching fare for type
@@ -51,15 +61,12 @@ export default function FareWidget() {
   // using data from each field, calculate ride cost
   const cost = useMemo(() => {
     if (data && destinationZone && rideDay && purchaseMethod && numRides) {
-      console.log(destinationZone, rideDay, purchaseMethod, numRides);
-
       const zoneData = getZoneData(destinationZone);
       const rideDayFareData = getRideDayFareData(
         zoneData,
         rideDay,
         purchaseMethod,
       );
-      console.log("===", rideDayFareData);
 
       // number of trips for this fare
       const trips = rideDayFareData.trips;
@@ -84,12 +91,6 @@ export default function FareWidget() {
             onChange={(value) => setPurchaseMethod(value)}
           />
           <NumRidesEntry onChange={(value) => setNumRides(value)} />
-          <div>
-            <p>{destinationZone}</p>
-            <p>{rideDay && rideDay.type}</p>
-            <p>{purchaseMethod}</p>
-            <p>{numRides ? numRides : 0}</p>
-          </div>
           <TotalFareCostView cost={cost} />
         </div>
         <div
