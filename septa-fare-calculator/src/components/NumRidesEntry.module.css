@@ -7,6 +7,17 @@
   padding: 45px;
 }
 
+.titleContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.specialPriceLabel {
+  color: red;
+}
+
 .title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 24pt;
