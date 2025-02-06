@@ -68,12 +68,11 @@ function RideDaySelection({ onChange }) {
         <option value="" disabled defaultValue="">
           Select...
         </option>
-        {rideDayData &&
-          rideDayData.map((day, index) => (
-            <option key={index} value={day.type}>
-              {day.name}
-            </option>
-          ))}
+        {rideDayData?.map((day, index) => (
+          <option key={index} value={day.type}>
+            {day.name}
+          </option>
+        ))}
       </select>
       {rideDayData && selectedOption && (
         <span className={styles.helperText}>
