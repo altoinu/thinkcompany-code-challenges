@@ -4,52 +4,52 @@ import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 
 function NumRidesEntry({ price, tripMultiple, onChange }) {
-  const [previousTripMultiple, setpreviousTripMultiple] =
+  const [previousTripMultiple, setPreviousTripMultiple] =
     useState(tripMultiple);
-  const [numRides, setNumRides] = useState(0);
+  const [value, setValue] = useState();
 
-  const updateNumRides = (newValue) => {
-    setNumRides(newValue);
+  const updateValue = (newValue) => {
+    setValue(newValue);
 
-    // send new selection to parent
+    // send new value to parent
     if (onChange) {
       onChange(newValue);
     }
   };
 
-  // onChange handler to remember selection
-  const handleNumChange = useCallback((e) => updateNumRides(e.target.value));
-
   useEffect(() => {
     if (tripMultiple != previousTripMultiple) {
       // tripMultiple updated, reset input
-      updateNumRides(0);
+      updateValue(0);
 
       // and remember this value
-      setpreviousTripMultiple(tripMultiple);
+      setPreviousTripMultiple(tripMultiple);
     }
   }, [tripMultiple]);
+
+  // onChange handler to remember selection
+  const handleNumChange = useCallback((e) => updateValue(e.target.value));
 
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         {price && tripMultiple > 1 && (
           <span className={styles.specialPriceLabel}>
-            * Special pricing: {formatToUSD(price)} / {tripMultiple} ticktes
+            * Special pricing: {formatToUSD(price)} / {tripMultiple} tickets
           </span>
         )}
-        <label className={styles.title} htmlFor="numRides">
+        <label className={styles.title} htmlFor="numTrips">
           How many rides will you need?
         </label>
       </div>
       <input
         type="number"
-        id="numRides"
-        name="numRides"
+        id="numTrips"
+        name="numTrips"
         className={styles.numberInput}
         min="0"
         step={tripMultiple}
-        value={numRides}
+        value={value}
         onChange={handleNumChange}
       />
     </div>
