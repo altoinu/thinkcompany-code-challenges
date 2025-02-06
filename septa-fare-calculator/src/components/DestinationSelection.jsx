@@ -10,12 +10,9 @@ function DestinationSelection({ onChange }) {
   const { data } = use(FareContext);
 
   // parse through data for destination data
-  const destinationData = useMemo(() => {
+  const zoneData = useMemo(() => {
     if (data && data.zones) {
-      return data.zones.map((item) => ({
-        name: item.name,
-        zone: item.zone,
-      }));
+      return data.zones;
     } else {
       return null;
     }
@@ -42,12 +39,11 @@ function DestinationSelection({ onChange }) {
         <option value="" disabled defaultValue="">
           Select...
         </option>
-        {destinationData &&
-          destinationData.map((destination, index) => (
-            <option key={index} value={destination.zone}>
-              {destination.name}
-            </option>
-          ))}
+        {zoneData?.map((item, index) => (
+          <option key={index} value={item.zone}>
+            {item.name}
+          </option>
+        ))}
       </select>
     </div>
   );
